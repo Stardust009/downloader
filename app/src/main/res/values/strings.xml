@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">test1</string>
+    <string name="proxy_label">代理</string>
+    <string name="begin_download">开始下载</string>
+    <string name="task_list">任务队列</string>
+    <string name="new_download">新建</string>
+    <string name="downloading">下载中</string>
+    <string name="download_history">下载记录</string>
+</resources>
