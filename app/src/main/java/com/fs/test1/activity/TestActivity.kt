@@ -17,9 +17,6 @@ class TestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.download_item_layout)
 
-        bt.setOnClickListener {
-            download_progress.progress += 10
-        }
 
         Thread {
             val httpUrl = URL("http://dl.2345.com/haozip/2345haozip_6.2.0.11032_setup.exe")

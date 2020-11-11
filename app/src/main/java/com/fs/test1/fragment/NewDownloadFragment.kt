@@ -58,7 +58,10 @@ class NewDownloadFragment : Fragment() {
                 showUrlIncorrect()
             }
             checkUrl(url) -> {
-                download(url)
+                Intent(activity, DownloadService::class.java).also {
+                    it.putExtra(DOWNLOAD_URL, url)
+                    activity?.startService(it)
+                }
             }
             else -> showUrlIncorrect()
         }
@@ -69,11 +72,4 @@ class NewDownloadFragment : Fragment() {
         Log.d(TAG, "出错。。。。。")
     }
 
-    private fun download(url: String) {
-
-        Intent(activity, DownloadService::class.java).also {
-            it.putExtra(DOWNLOAD_URL, url)
-            activity?.startService(it)
-        }
-    }
 }

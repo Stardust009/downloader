@@ -1,5 +1,6 @@
 package com.fs.test1.util
 
+import android.view.View
 import java.io.File
 import java.util.regex.Pattern
 
@@ -20,3 +21,4 @@ fun getFileNameFromUrl(url: String): String {
     else url.substring(lastPathSeparatorIndex + 1, urlSeparatorIndex)
 
 }
+

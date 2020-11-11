@@ -1,6 +1,7 @@
 package com.fs.test1
 
 import android.util.Log
+import com.fs.test1.exception.ValidDownloadFileException
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -24,9 +25,11 @@ class DownloadTaskRunnable(
             val conn = httpUrl.openConnection()
             val contentLength = conn.getHeaderField("Content-Length") ?: ""
             if (contentLength.isEmpty()) {
-                Log.d(TAG, "无效文件。。。。")
+                Log.d(TAG, "无效文件。。。。抛出异常 结束线程")
+                throw ValidDownloadFileException()
             } else {
                 Log.d(TAG, "有效文件 -----> ContentLength --------  $contentLength")
+                TaskManager.addDownloadingTask(this)
             }
             val file = File(downloadPath + File.separatorChar + fileName)
             val fos = FileOutputStream(file)

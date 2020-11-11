@@ -1,12 +1,10 @@
 package com.fs.test1
 
-import android.util.Log
 import com.fs.test1.util.getFileNameFromUrl
 import org.junit.Test
-
-import org.junit.Assert.*
 import java.io.File
 import java.net.URL
+import java.util.concurrent.Executors
 import java.util.regex.Pattern
 
 /**
@@ -58,5 +56,23 @@ class ExampleUnitTest {
 
         val s = "https://cdn-file-ssl-android.ludashi.com/android/ludashi/ludashi_home.apk?t=1605063600"
         println(getFileNameFromUrl(s))
+    }
+
+    @Test
+    fun myTest2() {
+        val runnable1 = Runnable {
+            Thread.sleep(1000)
+            println("任务一异常")
+            throw Error()
+        }
+        val runnable = Runnable {
+            Thread.sleep(3000)
+            println("任务二正常")
+        }
+        val threadPool = Executors.newFixedThreadPool(4)
+        threadPool.submit (runnable)
+        threadPool.submit(runnable1)
+        throw Error()
+
     }
 }

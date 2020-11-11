@@ -50,13 +50,28 @@
         android:progress="0"
         />
 
-    <Button
-        android:id="@+id/bt"
+    <TextView
+        android:id="@+id/pause_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/download_progress"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="100dp"
+        android:text="@string/pause"
+        app:layout_constraintRight_toLeftOf="@id/cancel_tv"
+        android:textColor="@color/dodgerblue"
+        app:layout_constraintTop_toBottomOf="@id/download_progress"
+        android:layout_marginTop="@dimen/pause_cancel_margin_top_dimen"
         />
+
+    <TextView
+        android:id="@+id/cancel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/cancel"
+        app:layout_constraintLeft_toRightOf="@id/pause_tv"
+        app:layout_constraintTop_toBottomOf="@id/download_progress"
+        android:layout_marginTop="@dimen/pause_cancel_margin_top_dimen"
+        android:textColor="@color/dodgerblue"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
