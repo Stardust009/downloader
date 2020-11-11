@@ -23,5 +23,5 @@ object TaskManager {
     fun setDownloadTaskListAdapter(adapter: DownloadItemListAdapter) {
         this.adapter = adapter
     }
-    fun moveDownloadTask()
+//    fun moveDownloadTask()
 }
