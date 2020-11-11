@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.fs.test1.DOWNLOAD_URL
 import com.fs.test1.R
 import com.fs.test1.TAG
+import com.fs.test1.broadcast.MyBroadcast
 import com.fs.test1.service.DownloadService
 import com.fs.test1.util.checkUrl
 import kotlinx.android.synthetic.main.new_dowload_page.*
@@ -35,8 +36,16 @@ class NewDownloadFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 
-        download_url_edit.setText("http://dl.2345.com/haozip/2345haozip_6.2.0.11032_setup.exe")
+        download_url_edit.setText("https://cdn-file-ssl-android.ludashi.com/android/ludashi/ludashi_home.apk?t=1605063600")
         begin_download_bt.setOnClickListener {
+            Log.d(TAG, "发送广播....")
+
+            activity?.sendBroadcast(
+                Intent().apply {
+                    setClass(activity!!, MyBroadcast::class.java)
+//                    action = "MY_BROADCAST_TEST"
+                    putExtra("broadcast", "I am Broadcast.")
+                })
             val url = download_url_edit.text.toString()
             checkDownloadUrl(url)
         }

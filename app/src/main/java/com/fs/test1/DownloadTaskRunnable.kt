@@ -28,13 +28,13 @@ class DownloadTaskRunnable(
             } else {
                 Log.d(TAG, "有效文件 -----> ContentLength --------  $contentLength")
             }
-            val file = File(downloadPath + File.pathSeparatorChar + fileName)
+            val file = File(downloadPath + File.separatorChar + fileName)
             val fos = FileOutputStream(file)
             val inputStream = conn.getInputStream()
             var len = 0
             while (inputStream.read(bytes).also { len = it } != -1) {
                 fos.write(bytes, 0, len)
-                Log.d(TAG, "当前下载进度 ---->  ${file.length()}")
+//                Log.d(TAG, "当前下载进度 ---->  ${file.length()}")
             }
             fos.close()
         } catch (e: IOException) {

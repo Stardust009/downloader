@@ -1,11 +1,16 @@
 package com.fs.test1.activity
 
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Environment
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fs.test1.DEFAULT_DOWNLOAD_PATH
 import com.fs.test1.R
+import com.fs.test1.broadcast.MyBroadcast
+import com.fs.test1.broadcast.NetworkStateReceiver
 import com.fs.test1.fragment.DownloadHistoryFragment
 import com.fs.test1.fragment.DownloadingFragment
 import com.fs.test1.fragment.NewDownloadFragment
@@ -37,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         bottom_nav.setOnNavigationItemSelectedListener {
             val fragment = when (it.itemId) {
                 R.id.new_download -> {
+
                     newDownloadFragment
                 }
                 R.id.downloading -> {
@@ -52,5 +58,8 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+
+        registerReceiver(NetworkStateReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+//        registerReceiver(MyBroadcast(), IntentFilter("MY_BROADCAST_TEST"))
     }
 }

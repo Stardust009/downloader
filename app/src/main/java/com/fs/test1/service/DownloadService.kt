@@ -1,6 +1,5 @@
 package com.fs.test1.service
 
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
@@ -8,9 +7,6 @@ import android.util.Log
 import com.fs.test1.DOWNLOAD_URL
 import com.fs.test1.Downloader
 import com.fs.test1.TAG
-import com.fs.test1.activity.SecondActivity
-import java.util.concurrent.ThreadPoolExecutor
-import java.util.concurrent.TimeUnit
 
 class DownloadService: Service() {
 
@@ -22,8 +18,6 @@ class DownloadService: Service() {
     }
 
     override fun onCreate() {
-        // 线程池
-//        threadPool = ThreadPoolExecutor(2, 10, 5000, TimeUnit.SECONDS, )
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

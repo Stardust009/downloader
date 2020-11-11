@@ -1,12 +1,13 @@
 package com.fs.test1
 
-import android.util.Log
+import com.fs.test1.util.getFileNameFromUrl
 import com.fs.test1.util.getProcessors
 import java.io.File
-import java.io.IOException
-import java.net.URL
 import java.net.URLConnection
-import java.util.concurrent.*
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.ThreadFactory
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 class Downloader {
 
@@ -24,9 +25,8 @@ class Downloader {
             0L,
             TimeUnit.MILLISECONDS,
             LinkedBlockingQueue<Runnable>(),
-            ThreadFactory { Thread() })
+            ThreadFactory { Thread(it) })
 
-        Executors.newFixedThreadPool(10)
     }
 
     public fun download(
@@ -36,8 +36,10 @@ class Downloader {
         updateBlock: () -> Unit
     ) {
 
-        val fileName = url.substring(url.lastIndexOf("/") + 1, url.length)
-        val path = DEFAULT_DOWNLOAD_PATH + File.pathSeparatorChar + DEFAULT_DOWNLOAD_DIR
+        val fileName = getFileNameFromUrl(url)
+        val path = DEFAULT_DOWNLOAD_PATH + File.separatorChar + DEFAULT_DOWNLOAD_DIR
+        val  downloadDir = File(path)
+        if (!downloadDir.exists()) downloadDir.mkdir()
         val task = DownloadTaskRunnable(url, fileName, path)
         threadPool.submit(task)
 

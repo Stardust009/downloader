@@ -1,9 +1,12 @@
 package com.fs.test1
 
+import android.util.Log
+import com.fs.test1.util.getFileNameFromUrl
 import org.junit.Test
 
 import org.junit.Assert.*
 import java.io.File
+import java.net.URL
 import java.util.regex.Pattern
 
 /**
@@ -34,5 +37,26 @@ class ExampleUnitTest {
         val index = s.lastIndexOf(".")
         val nameIndex = s.lastIndexOf("/")
         println(s.substring(nameIndex +1, s.length))
+    }
+
+    @Test
+    fun netTest() {
+        val httpUrl = URL("http://dl.2345.com/haozip/2345haozip_6.2.0.11032_setup.exe")
+        val conn = httpUrl.openConnection()
+        val contentLength = conn.getHeaderField("Date") ?: ""
+        println("ContentLength --------  $contentLength")
+
+        if (contentLength.isEmpty()) {
+            println("无效文件。。。。")
+        } else {
+            println("有效文件 -----> ContentLength --------  $contentLength")
+        }
+    }
+
+    @Test
+    fun myTest1() {
+
+        val s = "https://cdn-file-ssl-android.ludashi.com/android/ludashi/ludashi_home.apk?t=1605063600"
+        println(getFileNameFromUrl(s))
     }
 }
