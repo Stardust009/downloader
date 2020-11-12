@@ -1,34 +1,63 @@
 package com.fs.test1.activity
 
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.os.Environment
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.fs.test1.R
-import java.io.File
-import com.fs.test1.TAG
-import kotlinx.android.synthetic.main.download_item_layout.*
-import kotlinx.android.synthetic.main.test_layout.*
-import java.net.URL
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.fs.test1.*
+import com.fs.test1.adapter.DownloadItemListAdapter
+import kotlinx.android.synthetic.main.downloading_page_layout.*
 
 class TestActivity : AppCompatActivity() {
 
+    private lateinit var mAdapter: DownloadItemListAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.download_item_layout)
+        setContentView(R.layout.downloading_page_layout)
 
 
-        Thread {
-            val httpUrl = URL("http://dl.2345.com/haozip/2345haozip_6.2.0.11032_setup.exe")
-            val conn = httpUrl.openConnection()
-            val contentLength = conn.getHeaderField("Date") ?: ""
-            Log.d(TAG, "ContentLength --------  $contentLength")
+        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED)
 
-            if (contentLength.isEmpty()) {
-                Log.d(TAG, "无效文件。。。。")
-            } else {
-                Log.d(TAG, "有效文件 -----> ContentLength --------  $contentLength")
+            getExternalFilesDir(null)?.let { DEFAULT_DOWNLOAD_PATH = it.absolutePath }
+        downloading_task_list.apply {
+            mAdapter =
+                DownloadItemListAdapter(this@TestActivity, TaskManager.getDownloadingTaskList())
+            adapter = mAdapter
+            layoutManager =
+                LinearLayoutManager(this@TestActivity, LinearLayoutManager.VERTICAL, false)
+        }
+
+        with(TaskManager) {
+//            setDownloadTaskListAdapter(mAdapter as DownloadItemListAdapter)
+            updateDataSourceListener = {
+                this@TestActivity.runOnUiThread {
+                    mAdapter.notifyDataSetChanged()
+                    downloading_task_list.scrollToPosition(mAdapter.itemCount - 1)
+                    Log.d(TAG, "更新。。。${Thread.currentThread().name}")
+                }
             }
-        }.start()
+        }
+
+        with(TaskManager) {
+            setDownloadTaskListAdapter(mAdapter)
+            updateDataSourceListener = {
+                runOnUiThread {
+                    mAdapter.notifyDataSetChanged()
+                    downloading_task_list.scrollToPosition(mAdapter.itemCount - 1)
+                    Log.d(TAG, "更新。。。${Thread.currentThread().name}")
+                }
+            }
+        }
+/*
+        update_bt.setOnClickListener {
+            Downloader.getInstance().download(
+                "https://cdn-file-ssl-android.ludashi.com/android/ludashi/ludashi_home.apk?t=1605063600",
+                {},
+                {},
+                {})
+
+        }*/
     }
 }

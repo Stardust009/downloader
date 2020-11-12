@@ -1,6 +1,8 @@
 package com.fs.test1.adapter
 
+import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,27 +15,52 @@ import com.fs.test1.R
 
 class DownloadItemListAdapter(
     private val mContext: Context,
-    val runnableList: ArrayList<DownloadTaskRunnable>
+    private val runnableList: ArrayList<DownloadTaskRunnable>
 ) : RecyclerView.Adapter<DownloadItemListAdapter.ViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 
-        return ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val holder = ViewHolder(
             LayoutInflater.from(mContext).inflate(R.layout.download_item_layout, parent, false)
         )
+        runnableList[viewType].downloadProgressListener = { downloadedPercent, downloadedSize ->
+            (mContext as Activity).runOnUiThread {
+                holder.downloadProgress.progress = downloadedPercent
+                holder.downloadedFileSizeTv.text = downloadedSize.toString()
+            }
+        }
+        Log.d("ttt", "onCreateViewHolder : " + holder)
+        return holder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+//        Log.d("ttt", "onBindViewHolder : " + position + "    " + holder)
+        val task = runnableList[position]
 
+        with(holder) {
+
+            downloadFileNameTv.text = task.fileName
+            downloadedFileSizeTv.text = task.downloadedFileSize.toString()
+            downloadProgress.tag = task.fileName
+            if (task.downloadedFileSize == task.totalFileSize) downloadProgress.progress = 100
+        }
     }
 
     override fun getItemCount(): Int {
+
         return runnableList.size
     }
 
+    fun addTask(task: DownloadTaskRunnable) {
+        runnableList.add(task)
+        notifyDataSetChanged()
+    }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val downloadFileNameTv = bindView<TextView>(R.id.download_file_name)
         val downloadedFileSizeTv = bindView<TextView>(R.id.downloaded_size_and_all_size)
@@ -41,6 +68,14 @@ class DownloadItemListAdapter(
 
         private inline fun <reified T : View> bindView(@IdRes id: Int): T =
             itemView.findViewById(id)
+
+        init {
+//            Downloader.getInstance().setUpdateProgressListener {
+//                (mContext as Activity).runOnUiThread {
+//                    downloadProgress.progress = it
+//                }
+//            }
+        }
     }
 
 }

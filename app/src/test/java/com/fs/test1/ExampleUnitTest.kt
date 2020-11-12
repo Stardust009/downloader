@@ -5,6 +5,7 @@ import org.junit.Test
 import java.io.File
 import java.net.URL
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 
 /**
@@ -74,5 +75,35 @@ class ExampleUnitTest {
         threadPool.submit(runnable1)
         throw Error()
 
+    }
+
+    @Test
+    fun myTest3() {
+        val scheduler = Executors.newScheduledThreadPool(2)
+        scheduler.scheduleAtFixedRate({
+            println("执行。。。。")
+        }, 0, 1000, TimeUnit.SECONDS)
+    }
+
+
+    class Person(var age: Int) {
+
+        fun age() {
+            println(p.age)
+        }
+        lateinit var p: Person
+        fun setPp(pp: Person) {
+            this.p = pp
+        }
+    }
+
+    @Test
+    fun myTest4() {
+        val p = Person(0)
+        val p1 = Person(10)
+        p.setPp(p1)
+        p.age()
+        p1.age = 20
+        p.age()
     }
 }

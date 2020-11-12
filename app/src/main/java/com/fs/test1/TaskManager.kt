@@ -1,7 +1,7 @@
 package com.fs.test1
 
+import android.util.Log
 import com.fs.test1.adapter.DownloadItemListAdapter
-import java.util.*
 import kotlin.collections.ArrayList
 
 object TaskManager {
@@ -11,17 +11,21 @@ object TaskManager {
 
     private val downloadingTaskList = arrayListOf<DownloadTaskRunnable>()
     private val FinishedTaskList = ArrayList<String>()
-    private lateinit var adapter: DownloadItemListAdapter
-
+     lateinit var adapter: DownloadItemListAdapter
+    lateinit var updateDataSourceListener: (task: DownloadTaskRunnable) -> Unit
     fun getDownloadingTaskList() = downloadingTaskList
 
     fun addDownloadingTask(task: DownloadTaskRunnable) {
         downloadingTaskList.add(task)
-        adapter.notifyDataSetChanged()
+        updateDataSourceListener.invoke(task)
+        Log.d(TAG, "当前队列中任务数 --->   ${downloadingTaskList.size}")
     }
 
     fun setDownloadTaskListAdapter(adapter: DownloadItemListAdapter) {
         this.adapter = adapter
     }
-//    fun moveDownloadTask()
+
+    fun moveDownloadTask() {
+
+    }
 }

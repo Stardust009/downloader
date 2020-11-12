@@ -1,17 +1,39 @@
 package com.fs.test1
 
+import android.os.Environment
 import com.fs.test1.util.getFileNameFromUrl
 import com.fs.test1.util.getProcessors
 import java.io.File
 import java.net.URLConnection
-import java.util.concurrent.LinkedBlockingQueue
-import java.util.concurrent.ThreadFactory
-import java.util.concurrent.ThreadPoolExecutor
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.*
+import kotlin.concurrent.thread
 
 class Downloader {
 
-    private lateinit var threadPool: ThreadPoolExecutor
+    companion object {
+
+        @Volatile
+        private var downloader: Downloader? = null
+
+/*
+        val downloaderInstance: Downloader?
+            get() {
+                downloader ?: synchronized(this) {
+                    downloader ?: Downloader().also { downloader = it }
+                }
+               return downloader
+            }
+*/
+
+        fun getInstance(): Downloader = downloader ?: synchronized(this) {
+            downloader ?: Downloader().also {
+                downloader = it
+            }
+        }
+    }
+
+    private var threadPool: ThreadPoolExecutor
+    private lateinit var updateProgressListener: (downloadedSize: Int) -> Unit
 
     init {
 
@@ -22,10 +44,12 @@ class Downloader {
         threadPool = ThreadPoolExecutor(
             corePoolSize,
             maxPoolSize,
-            0L,
-            TimeUnit.MILLISECONDS,
-            LinkedBlockingQueue<Runnable>(),
+            60L,
+            TimeUnit.SECONDS,
+            LinkedBlockingQueue(),
             ThreadFactory { Thread(it) })
+
+//        threadPool = Executors.newCachedThreadPool { Thread(it) } as ThreadPoolExecutor
 
     }
 
@@ -36,13 +60,25 @@ class Downloader {
         updateBlock: () -> Unit
     ) {
 
-        val fileName = getFileNameFromUrl(url)
-        val path = DEFAULT_DOWNLOAD_PATH + File.separatorChar + DEFAULT_DOWNLOAD_DIR
-        val  downloadDir = File(path)
-        if (!downloadDir.exists()) downloadDir.mkdir()
-        val task = DownloadTaskRunnable(url, fileName, path)
-        threadPool.submit(task)
+        var fileName = getFileNameFromUrl(url)
 
+        val path = DEFAULT_DOWNLOAD_PATH + File.separatorChar + DEFAULT_DOWNLOAD_DIR
+        val downloadDir = File(path)
+        if (!downloadDir.exists()) downloadDir.mkdir()
+        var f = File(path + File.separatorChar + fileName)
+        var i = 1
+        val s = fileName.substring(0, fileName.indexOf("."))
+        val suffix = fileName.substring(fileName.indexOf("."), fileName.length)
+        while (f.exists()) {
+            fileName = "$s($i)$suffix"
+            f = File(path + File.separatorChar + fileName)
+            i++
+        }
+        val task = DownloadTaskRunnable(url, fileName, path)
+//        threadPool.submit(task)
+
+        val t = Thread(task)
+        t.start()
 /*        try {
             val httpUrl = URL(url)
             val conn = httpUrl.openConnection()

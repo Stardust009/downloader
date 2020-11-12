@@ -11,8 +11,6 @@ import com.fs.test1.TAG
 class DownloadService: Service() {
 
 
-    private val downloader = Downloader()
-
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
@@ -25,13 +23,16 @@ class DownloadService: Service() {
 
         val downloadUrl = intent?.getStringExtra(DOWNLOAD_URL)!!
         Log.d(TAG, "URL ---->  $downloadUrl")
-        downloader.download(downloadUrl, {
+        Downloader.getInstance().
+           download(downloadUrl, {
             Log.d(TAG, "无效的下载")
         }, {
             Log.d(TAG, "开始下载。。。。")
         }, {
 
         })
+
+
 //        val pendingIntent = Intent(this, SecondActivity::class.java).let {
 //            PendingIntent.getService(this, 0, it, 0)
 //        }
