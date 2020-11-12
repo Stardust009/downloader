@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="pause_cancel_margin_top_dimen">5dp</dimen>
+</resources>
