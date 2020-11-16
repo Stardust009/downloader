@@ -50,14 +50,6 @@ class TestActivity : AppCompatActivity() {
                 }
             }
         }
-/*
-        update_bt.setOnClickListener {
-            Downloader.getInstance().download(
-                "https://cdn-file-ssl-android.ludashi.com/android/ludashi/ludashi_home.apk?t=1605063600",
-                {},
-                {},
-                {})
 
-        }*/
     }
 }
