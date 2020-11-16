@@ -51,7 +51,6 @@ class DownloadService : Service() {
             waitDownloadUrlList.add(downloadUrl)
         }
 
-
         return START_NOT_STICKY
     }
 
