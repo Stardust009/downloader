@@ -106,4 +106,27 @@ class ExampleUnitTest {
         p1.age = 20
         p.age()
     }
+
+    @Test
+    fun myTest5() {
+        val list = arrayListOf<String>()
+        list.add("1")
+        list.add("2")
+        list.add("3")
+        list.add("4")
+        list.add("5")
+
+//        list.forEach {
+//            if (it.toInt() == 3) list.remove(it)
+//        }
+        val iterator = list.iterator()
+        while (iterator.hasNext()) {
+            val s = iterator.next()
+            println(s)
+            if (s.toInt() == 3)
+                iterator.remove()
+        }
+        list.forEach { println(it) }
+    }
+
 }

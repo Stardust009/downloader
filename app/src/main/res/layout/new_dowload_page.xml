@@ -11,39 +11,64 @@
         android:layout_marginTop="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:hint="@string/download_address"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
         />
 
 
+
+    <TextView
+        android:id="@+id/proxy_setting_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/proxy_setting"
+        android:layout_below="@id/download_url_edit"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textSize="23sp"
+
+   />
+
+
+    <EditText
+        android:id="@+id/host_name_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/proxy_setting_tv"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textAllCaps="false"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:layout_marginTop="20dp"
+        android:hint="@string/host_name"
+        />
+
+    <EditText
+        android:id="@+id/port_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/host_name_edit"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textAllCaps="false"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:layout_marginTop="20dp"
+        android:hint="@string/port_number"
+        />
     <Button
         android:id="@+id/begin_download_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/download_url_edit"
+        android:layout_below="@id/port_edit"
         android:background="@color/white"
         android:text="@string/begin_download"
         android:layout_marginTop="30dp"
         />
 
-    <TextView
-        android:id="@+id/task_list_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/task_list"
-        android:layout_below="@id/begin_download_bt"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:textSize="23sp"
-   />
-
-    <ListView
-        android:id="@+id/task_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/task_list_tv"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"/>
 
 </RelativeLayout>

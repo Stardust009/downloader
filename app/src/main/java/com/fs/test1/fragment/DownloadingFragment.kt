@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fs.test1.R
 import com.fs.test1.TAG
-import com.fs.test1.TaskManager
+import com.fs.test1.downloader.TaskManager
 import com.fs.test1.adapter.DownloadItemListAdapter
 import kotlinx.android.synthetic.main.downloading_page_layout.*
 
@@ -22,7 +22,6 @@ class DownloadingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG, "初始化 DownloadingFragment  onCreateView ")
 
         mRootView = inflater.inflate(R.layout.downloading_page_layout, container, false)
         return mRootView
@@ -30,7 +29,6 @@ class DownloadingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        Log.d(TAG, "初始化 DownloadingFragment  onViewCreated ")
         downloading_task_list.apply {
             mAdapter = DownloadItemListAdapter(activity!!, TaskManager.getDownloadingTaskList())
             adapter = mAdapter
@@ -38,8 +36,7 @@ class DownloadingFragment : Fragment() {
         }
 
         with(TaskManager) {
-            setDownloadTaskListAdapter(mAdapter)
-            updateDataSourceListener = {
+            updateDataSource = {
                 activity?.runOnUiThread {
                     mAdapter.notifyDataSetChanged()
                     downloading_task_list.scrollToPosition(mAdapter.itemCount  -1)

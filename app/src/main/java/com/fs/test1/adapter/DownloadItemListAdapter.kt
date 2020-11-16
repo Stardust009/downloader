@@ -10,8 +10,9 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
-import com.fs.test1.DownloadTaskRunnable
+import com.fs.test1.downloader.DownloadTaskRunnable
 import com.fs.test1.R
+import com.fs.test1.base.BaseViewHolder
 
 class DownloadItemListAdapter(
     private val mContext: Context,
@@ -33,7 +34,6 @@ class DownloadItemListAdapter(
                 holder.downloadedFileSizeTv.text = downloadedSize.toString()
             }
         }
-        Log.d("ttt", "onCreateViewHolder : " + holder)
         return holder
     }
 
@@ -60,22 +60,13 @@ class DownloadItemListAdapter(
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) :BaseViewHolder(itemView){
 
         val downloadFileNameTv = bindView<TextView>(R.id.download_file_name)
         val downloadedFileSizeTv = bindView<TextView>(R.id.downloaded_size_and_all_size)
         val downloadProgress = bindView<ProgressBar>(R.id.download_progress)
 
-        private inline fun <reified T : View> bindView(@IdRes id: Int): T =
-            itemView.findViewById(id)
 
-        init {
-//            Downloader.getInstance().setUpdateProgressListener {
-//                (mContext as Activity).runOnUiThread {
-//                    downloadProgress.progress = it
-//                }
-//            }
-        }
     }
 
 }

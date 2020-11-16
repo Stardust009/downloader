@@ -8,4 +8,8 @@
     <string name="download_history">下载记录</string>
     <string name="cancel">取消</string>
     <string name="pause">暂停</string>
+    <string name="proxy_setting">代理设置</string>
+    <string name="host_name">Host Name</string>
+    <string name="port_number">Port Number</string>
+    <string name="download_address">下载链接</string>
 </resources>

@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fs.test1.*
 import com.fs.test1.adapter.DownloadItemListAdapter
+import com.fs.test1.content_provider.DownloadHistoryContentProvider
+import com.fs.test1.downloader.TaskManager
 import kotlinx.android.synthetic.main.downloading_page_layout.*
 
 class TestActivity : AppCompatActivity() {
@@ -18,7 +20,7 @@ class TestActivity : AppCompatActivity() {
         setContentView(R.layout.downloading_page_layout)
 
 
-        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED)
+/*        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED)
 
             getExternalFilesDir(null)?.let { DEFAULT_DOWNLOAD_PATH = it.absolutePath }
         downloading_task_list.apply {
@@ -31,25 +33,13 @@ class TestActivity : AppCompatActivity() {
 
         with(TaskManager) {
 //            setDownloadTaskListAdapter(mAdapter as DownloadItemListAdapter)
-            updateDataSourceListener = {
-                this@TestActivity.runOnUiThread {
-                    mAdapter.notifyDataSetChanged()
-                    downloading_task_list.scrollToPosition(mAdapter.itemCount - 1)
-                    Log.d(TAG, "更新。。。${Thread.currentThread().name}")
-                }
-            }
-        }
 
-        with(TaskManager) {
-            setDownloadTaskListAdapter(mAdapter)
-            updateDataSourceListener = {
-                runOnUiThread {
-                    mAdapter.notifyDataSetChanged()
-                    downloading_task_list.scrollToPosition(mAdapter.itemCount - 1)
-                    Log.d(TAG, "更新。。。${Thread.currentThread().name}")
-                }
-            }
         }
+        */
 
+        val name = "ludashi.apk"
+        val path = "/com.fs.test1/downhload"
+        val writable = DownloadHistoryContentProvider.db.writableDatabase
+        writable.execSQL("insert into download_history (file_name, file_size, file_path) values ('$name', '123434', '$path')")
     }
 }
